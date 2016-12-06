@@ -20,23 +20,26 @@ function initmap() {
 
 initmap();
 
+var stations = {};
+
 // Using fetch; maybe plus polyfill?
 //   http://stackoverflow.com/questions/8567114/how-to-make-an-ajax-call-without-jquery
 // This will only work on a server (cross-site scripting).
 
 // Also, see http://leafletjs.com/examples/geojson/
 
-/*
+
 var opts = {
   method: 'GET'
 };
+
 fetch('data/stations.geojson', opts).then(function (response) {
   return response.json();
 })
 .then(function (body) {
   console.log(body);
 });
-*/
+
 
 // Some default values for all of the station markers
 var geojsonMarkerOptions = {
