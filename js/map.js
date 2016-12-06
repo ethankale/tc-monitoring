@@ -34,10 +34,10 @@ var opts = {
 };
 
 fetch('data/stations.geojson', opts).then(function (response) {
-  return response.json();
+    return response.json();
 })
 .then(function (body) {
-  console.log(body);
+    stations = body;
 });
 
 
