@@ -27,6 +27,7 @@ Configuration and functions
 */
  
 var stations = {};
+var stationsLayer = {};
 
 // Some default values for all of the station markers
 var geojsonMarkerOptions = {
@@ -98,14 +99,14 @@ var opts = {
   method: 'GET'
 };
 
-fetch('data/stations.geojson', opts).then(function (response) {
+fetch('data/stations.geojson', opts)
+.then(function (response) {
     return response.json();
 })
 .then(function (body) {
     stations = body;
-    
     // Add stations to map.  Also, color them based on their type
-    var stationsLayer = L.geoJSON(stations, {
+    stationsLayer = L.geoJSON(stations, {
         pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng, geojsonMarkerOptions);
         },
@@ -115,6 +116,9 @@ fetch('data/stations.geojson', opts).then(function (response) {
         onEachFeature: onEachStation
     }).addTo(map);
     
+})
+.catch(function(error) {
+    console.log(error);
 });
 
 
