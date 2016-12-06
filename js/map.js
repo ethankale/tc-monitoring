@@ -20,26 +20,13 @@ function initmap() {
 
 initmap();
 
+
+
+/*
+Configuration and functions
+*/
+ 
 var stations = {};
-
-// Using fetch; maybe plus polyfill?
-//   http://stackoverflow.com/questions/8567114/how-to-make-an-ajax-call-without-jquery
-// This will only work on a server (cross-site scripting).
-
-// Also, see http://leafletjs.com/examples/geojson/
-
-
-var opts = {
-  method: 'GET'
-};
-
-fetch('data/stations.geojson', opts).then(function (response) {
-    return response.json();
-})
-.then(function (body) {
-    stations = body;
-});
-
 
 // Some default values for all of the station markers
 var geojsonMarkerOptions = {
@@ -87,17 +74,6 @@ function stationColor(type) {
     }
 }
 
-// Add stations to map.  Also, color them based on their type
-var stationsLayer = L.geoJSON(stations, {
-    pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
-    },
-    style: function(feature) {
-        return {fillColor: stationColor(feature.properties.Type)};
-    },
-    onEachFeature: onEachStation
-}).addTo(map);
-
 // Add a legend to the map; see http://leafletjs.com/examples/choropleth/
 var legend = L.control({position: 'topright'});
 
@@ -116,5 +92,32 @@ legend.onAdd = function (map) {
 };
 
 legend.addTo(map);
+
+// Now add the data to the map
+var opts = {
+  method: 'GET'
+};
+
+fetch('data/stations.geojson', opts).then(function (response) {
+    return response.json();
+})
+.then(function (body) {
+    stations = body;
+    
+    // Add stations to map.  Also, color them based on their type
+    var stationsLayer = L.geoJSON(stations, {
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+        },
+        style: function(feature) {
+            return {fillColor: stationColor(feature.properties.Type)};
+        },
+        onEachFeature: onEachStation
+    }).addTo(map);
+    
+});
+
+
+
 
 
